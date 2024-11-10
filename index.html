@@ -103,7 +103,6 @@
 </body>
 </html> -->
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -159,10 +158,28 @@
       margin-top: 10px;
       text-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.5);
     }
+
+    .fullscreen-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .fullscreen-btn:active {
+      background-color: #666;
+    }
   </style>
 </head>
 <body>
   <div class="clock">
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
     <div class="inner-container">
       <div class="time"></div>
       <div class="date"></div>
@@ -170,6 +187,19 @@
   </div>
 
   <script>
+    // Fullscreen toggle function
+    function toggleFullscreen() {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+        document.documentElement.mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+        document.documentElement.msRequestFullscreen();
+      }
+    }
+
     // Update the time and date every second
     setInterval(() => {
       const now = new Date();
