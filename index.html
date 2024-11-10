@@ -102,6 +102,7 @@
   </script>
 </body>
 </html> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -159,23 +160,6 @@
       font-size: 4vw;
       margin-top: 10px;
     }
-
-    .weather-icon {
-      width: 5vw;
-      height: 5vw;
-      margin-top: 10px;
-    }
-
-    .weather-description {
-      font-size: 3vw;
-      margin-top: 20px;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.5);
-      color: white;
-      max-width: 100%;
-      word-wrap: break-word;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
   </style>
 </head>
 <body>
@@ -184,58 +168,11 @@
       <div class="display">
         <div class="time"></div>
         <div class="date"></div>
-        <img id="weather-icon" class="weather-icon" src="https://openweathermap.org/img/wn/50d@2x.png" alt="Weather Icon" /> <!-- Default icon (cross on a cloud) -->
-        <div class="weather-description" id="weather-description">Fetching weather...</div>
       </div>
     </div>
   </div>
 
   <script>
-    const apiKey = 'b456ae85b767246d09b74d49201f72ff'; // OpenWeatherMap API key
-    const city = 'London'; // Replace with the city you want to fetch weather for
-    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-    // Function to fetch weather data using XMLHttpRequest for better iOS 9 compatibility
-    function getWeatherDescription() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', weatherUrl, true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            try {
-              const data = JSON.parse(xhr.responseText);
-              const weatherDescription = data.weather[0].description;
-              const weatherIconCode = data.weather[0].icon; // Weather icon code from API
-              const iconUrl = `https://openweathermap.org/img/wn/${weatherIconCode}@2x.png`; // URL to weather icon
-
-              // Update the weather description and icon
-              document.getElementById('weather-description').textContent = weatherDescription.charAt(0).toUpperCase() + weatherDescription.slice(1);
-              document.getElementById('weather-icon').src = iconUrl; // Set the weather icon source
-            } catch (error) {
-              console.error('Error parsing weather data:', error);
-              document.getElementById('weather-description').textContent = 'Error parsing data';
-              document.getElementById('weather-icon').src = 'https://openweathermap.org/img/wn/50d@2x.png'; // Set default icon in case of error
-            }
-          } else {
-            console.error('API request failed:', xhr.status);
-            document.getElementById('weather-description').textContent = 'Failed to fetch weather data';
-            document.getElementById('weather-icon').src = 'https://openweathermap.org/img/wn/50d@2x.png'; // Set default icon in case of failure
-          }
-        }
-      };
-      xhr.onerror = function() {
-        console.error('Network error occurred while fetching weather data');
-        document.getElementById('weather-description').textContent = 'Network error';
-        document.getElementById('weather-icon').src = 'https://openweathermap.org/img/wn/50d@2x.png'; // Set default icon in case of error
-      };
-      xhr.send();
-    }
-
-    // Fetch the weather data every 30 minutes (or set your desired interval)
-    getWeatherDescription();
-    setInterval(getWeatherDescription, 1800000); // 30 minutes
-
     // Update the time and date every second
     setInterval(() => {
       const now = new Date();
