@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Clock</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: monospace;
+    }
+
+    .clock {
+      width: 80vw;
+      height: 80vh;
+      background-color: #333;
+      color: #fff;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      box-shadow: 0px 10px 30px rgba(255, 255, 255, 0.15);
+      position: relative;
+    }
+
+    .inner-container {
+      width: 95%;
+      height: 90%;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+      position: absolute;
+      box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.25);
+      flex-direction: column;
+      padding: 10px;
+    }
+
+    .display {
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Vertically center the content */
+      align-items: center; /* Horizontally center the content */
+      text-align: center;
+      color: white;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.5);
+      flex-grow: 1; /* Allow text area to take available space */
+    }
+
+    .time {
+      font-size: 10vw;
+    }
+
+    .date {
+      font-size: 4vw;
+      margin-top: 10px;
+    }
+
+    .weather-icon {
+      width: 5vw;
+      height: 5vw;
+      margin-bottom: 10px;
+    }
+
+    .weather-description {
+      font-size: 3vw;
+      margin-top: 20px;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.5);
+      color: white;
+      max-width: 100%;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock">
+    <div class="inner-container">
+      <div class="display">
+        <div class="time"></div>
+        <div class="date"></div>
+        <!-- Weather Icon will be dynamically inserted here -->
+        <img id="weather-icon" class="weather-icon" src="" alt="Weather Icon" />
+        <div class="weather-description" id="weather-description">Fetching weather...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const apiKey = 'b456ae85b767246d09b74d49201f72ff'; // OpenWeatherMap API key
+    const city = 'London'; // Replace with the city you want to fetch weather for
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+    // Function to fetch weather data and update the weather description
+    function getWeatherDescription() {
+      fetch(weatherUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('API request failed');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const weatherDescription = data.weather[0].description;
+          const weatherIconCode = data.weather[0].icon; // Weather icon code from API
+          const iconUrl = `https://openweathermap.org/img/wn/${weatherIconCode}@2x.png`; // URL to weather icon
+
+          // Update the weather description and icon
+          document.getElementById('weather-description').textContent = weatherDescription.charAt(0).toUpperCase() + weatherDescription.slice(1);
+          document.getElementById('weather-icon').src = iconUrl; // Set the weather icon source
+        })
+        .catch(error => {
+          console.error('Error fetching weather data:', error);
+          document.getElementById('weather-description').textContent = 'Failed to fetch weather data';
+          document.getElementById('weather-icon').src = ''; // Clear the icon in case of error
+        });
+    }
+
+    // Fetch the weather data every 30 minutes (or set your desired interval)
+    getWeatherDescription();
+    setInterval(getWeatherDescription, 1800000); // 30 minutes
+
+    // Update the time and date every second
+    setInterval(() => {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const dateString = now.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
+      document.querySelector('.time').textContent = timeString;
+      document.querySelector('.date').textContent = dateString;
+    }, 1000);
+  </script>
+</body>
+</html>
