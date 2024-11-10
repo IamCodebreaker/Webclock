@@ -102,7 +102,6 @@
   </script>
 </body>
 </html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -185,7 +184,7 @@
       <div class="display">
         <div class="time"></div>
         <div class="date"></div>
-        <img id="weather-icon" class="weather-icon" src="" alt="Weather Icon" />
+        <img id="weather-icon" class="weather-icon" src="https://openweathermap.org/img/wn/50d@2x.png" alt="Weather Icon" /> <!-- Default icon (cross on a cloud) -->
         <div class="weather-description" id="weather-description">Fetching weather...</div>
       </div>
     </div>
@@ -216,19 +215,19 @@
             } catch (error) {
               console.error('Error parsing weather data:', error);
               document.getElementById('weather-description').textContent = 'Error parsing data';
-              document.getElementById('weather-icon').src = ''; // Clear the icon in case of error
+              document.getElementById('weather-icon').src = 'https://openweathermap.org/img/wn/50d@2x.png'; // Set default icon in case of error
             }
           } else {
             console.error('API request failed:', xhr.status);
             document.getElementById('weather-description').textContent = 'Failed to fetch weather data';
-            document.getElementById('weather-icon').src = ''; // Clear the icon in case of error
+            document.getElementById('weather-icon').src = 'https://openweathermap.org/img/wn/50d@2x.png'; // Set default icon in case of failure
           }
         }
       };
       xhr.onerror = function() {
         console.error('Network error occurred while fetching weather data');
         document.getElementById('weather-description').textContent = 'Network error';
-        document.getElementById('weather-icon').src = ''; // Clear the icon in case of error
+        document.getElementById('weather-icon').src = 'https://openweathermap.org/img/wn/50d@2x.png'; // Set default icon in case of error
       };
       xhr.send();
     }
